@@ -32,5 +32,18 @@ android:padding="20dp">
     android:layout_height="wrap_content"
     android:text="Start Activity Implicitly"
     android:layout_marginTop="10dp" />
+    <Button
+        android:id="@+id/btnStartService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Service"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnSendBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Broadcast"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
