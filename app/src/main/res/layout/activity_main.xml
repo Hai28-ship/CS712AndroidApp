@@ -45,5 +45,11 @@ android:padding="20dp">
         android:layout_height="wrap_content"
         android:text="Send Broadcast"
         android:layout_marginTop="10dp" />
+    <Button
+        android:id="@+id/btnThirdActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Image Activity"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
