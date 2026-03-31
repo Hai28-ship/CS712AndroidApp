@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Assignment 4: Manifest analysis reuse -->
-    <!-- Permission reused from Assignment 1 -->
+
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- Camera feature -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -15,28 +18,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS712AndroidApp">
+
+        <!-- Third Activity -->
         <activity
             android:name=".ThirdActivity"
             android:exported="false" />
+
         <!-- Broadcast Receiver -->
         <receiver
             android:name=".MyBroadcastReceiver"
-            android:exported="false" /> <!-- Foreground Service -->
+            android:exported="false" />
+
+        <!-- Service -->
         <service
             android:name=".MyService"
-            android:exported="false" /> <!-- Activities -->
+            android:exported="false" />
+
+        <!-- Second Activity -->
         <activity
             android:name=".SecondActivity"
             android:exported="false" />
+
+        <!-- Main Activity (Launcher) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>
