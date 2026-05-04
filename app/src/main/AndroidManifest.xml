@@ -9,6 +9,14 @@
     <!-- Camera feature -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+    <!-- ========================= -->
+    <!-- CUSTOM PERMISSION -->
+    <!-- ========================= -->
+    <permission
+        android:name="com.example.cs712androidapp.MSE712"
+        android:label="MSE712 Permission"
+        android:protectionLevel="dangerous" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -34,10 +42,11 @@
             android:name=".MyService"
             android:exported="false" />
 
-        <!-- Second Activity -->
+        <!-- Second Activity (PROTECTED) -->
         <activity
             android:name=".SecondActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:permission="com.example.cs712androidapp.MSE712" />
 
         <!-- Main Activity (Launcher) -->
         <activity

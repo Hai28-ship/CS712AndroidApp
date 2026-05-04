@@ -4,12 +4,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
@@ -26,10 +28,24 @@ class MainActivity : AppCompatActivity() {
         val btnSendBroadcast = findViewById<Button>(R.id.btnSendBroadcast)
         val btnThirdActivity = findViewById<Button>(R.id.btnThirdActivity)
 
-        // Explicit Intent → SecondActivity
+        // =========================
+        // CUSTOM PERMISSION CHECK
+        // =========================
+        if (ContextCompat.checkSelfPermission(
+                this,
+                "com.example.cs712androidapp.MSE712"
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf("com.example.cs712androidapp.MSE712"),
+                100
+            )
+        }
+
+        // Explicit Intent → SecondActivity (NOW PROTECTED FLOW)
         btnExplicit.setOnClickListener {
-            val intent = Intent(this, SecondActivity::class.java)
-            startActivity(intent)
+            openSecondActivity()
         }
 
         // Implicit Intent → Browser
@@ -39,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Start Service (API-safe)
+        // Start Service
         btnStartService.setOnClickListener {
             val serviceIntent = Intent(this, MyService::class.java)
 
@@ -54,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         btnSendBroadcast.setOnClickListener {
             val intent = Intent()
             intent.action = "com.example.cs712androidapp.MY_CUSTOM_BROADCAST"
-            intent.setPackage(packageName) // recommended
+            intent.setPackage(packageName)
             sendBroadcast(intent)
         }
 
@@ -64,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // BroadcastReceiver
+        // Broadcast Receiver
         myReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 Toast.makeText(context, "Broadcast received!", Toast.LENGTH_SHORT).show()
@@ -73,13 +89,41 @@ class MainActivity : AppCompatActivity() {
 
         val filter = IntentFilter("com.example.cs712androidapp.MY_CUSTOM_BROADCAST")
 
-        // ✅ SAFE + MODERN WAY (works with minSdk 24)
         ContextCompat.registerReceiver(
             this,
             myReceiver,
             filter,
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+    }
+
+    // =========================
+    // OPEN SECOND ACTIVITY
+    // =========================
+    private fun openSecondActivity() {
+        val intent = Intent(this, SecondActivity::class.java)
+        startActivity(intent)
+    }
+
+    // =========================
+    // PERMISSION RESULT HANDLER
+    // =========================
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                openSecondActivity()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onStop() {
